@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Loan Rejected</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    position: relative;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 32px;
+    height: 32px;
+    background: #e11b22;
+    color: #fff;
+    border-radius: 50%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  .brand-bar {
+    background: #d9534f;
+    color: #fff;
+    text-align: center;
+    padding: 18px;
+  }
+  .brand-bar img { height: 50px; margin-bottom: 6px; }
+  .brand-text { font-size: 18px; font-weight: bold; }
+
+  .receipt { padding: 20px; text-align: center; }
+  .fail-icon { font-size: 50px; color: #d9534f; margin-bottom: 10px; }
+  h1 { font-size: 20px; margin: 5px 0; color: #d9534f; }
+  .subtitle { font-size: 13px; color: #777; margin-bottom: 15px; }
+  .reason {
+    font-size: 14px;
+    color: #333;
+    margin-top: 12px;
+    text-align: left;
+    background: #f8d7da;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #f5c2c7;
+  }
+
+  button.continue {
+    margin-top: 16px; width: 100%; padding: 12px;
+    font-size: 14px; background: #d9534f; color: #fff;
+    border: none; border-radius: 8px; cursor: pointer;
+  }
+
+  button.continue:hover { background: #c12b2a; }
+
+  .footer-note { text-align: center; font-size: 12px; color: #777; margin-top: 10px; }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="close-btn" onclick="window.close()">✕</div>
+
+  <div class="brand-bar">
+    <img src="GCB_logo.jpeg" alt="Bank Logo">
+    <div class="brand-text">BANK OF GHANA</div>
+  </div>
+
+  <div class="receipt">
+    <div class="fail-icon">❌</div>
+    <h1>Loan Rejected</h1>
+    <div class="subtitle">We are sorry. Your loan application has been rejected.</div>
+
+    <div class="reason">
+      Reason: You did not maintain at least <strong>10%</strong> of the loan amount in your Telecel account.  
+      To qualify for this loan, please deposit the required funds to your Telecel account and reapply.
+    </div>
+
+    <button class="continue" onclick="window.location.href='index.html'">Return Home</button>
+
+    <div class="footer-note">
+      For further assistance, contact support.
+    </div>
+  </div>
+</div>
+</body>
+</html>

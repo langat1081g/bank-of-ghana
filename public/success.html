@@ -15,6 +15,7 @@
     justify-content: center;
     align-items: center;
     padding: 16px;
+    position: relative;
   }
 
   /* LOADER */
@@ -39,14 +40,8 @@
     margin-bottom: 12px;
   }
 
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .loader-text {
-    font-size: 14px;
-    color: #555;
-  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { font-size: 14px; color: #555; }
 
   /* CARD */
   .container {
@@ -57,7 +52,27 @@
     padding: 0;
     box-shadow: 0 10px 25px rgba(0,0,0,0.12);
     overflow: hidden;
-    display: none; /* hidden until loader finishes */
+    display: none;
+    position: relative;
+  }
+
+  /* CLOSE BUTTON OUTSIDE BOX */
+  .close-btn {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 32px;
+    height: 32px;
+    background: #e11b22;
+    color: #fff;
+    border-radius: 50%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   }
 
   /* HEADER */
@@ -68,129 +83,41 @@
     padding: 18px;
   }
 
-  .brand-bar img {
-    height: 50px;
-    margin-bottom: 6px;
-  }
-
-  .brand-text {
-    font-size: 18px;
-    font-weight: bold;
-  }
+  .brand-bar img { height: 50px; margin-bottom: 6px; }
+  .brand-text { font-size: 18px; font-weight: bold; }
 
   /* RECEIPT BODY */
-  .receipt {
-    padding: 20px;
-    text-align: center;
-    position: relative;
-  }
+  .receipt { padding: 20px; text-align: center; }
+  .success-icon { font-size: 50px; color: #0a8f55; margin-bottom: 10px; }
+  h1 { font-size: 20px; margin: 5px 0; color: #0a8f55; }
+  .subtitle { font-size: 13px; color: #777; margin-bottom: 15px; }
 
-  .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 28px;
-    height: 28px;
-    background: #e11b22;
-    color: #fff;
-    border-radius: 50%;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
-  .success-icon {
-    font-size: 50px;
-    color: #0a8f55;
-    margin-bottom: 10px;
-  }
-
-  h1 {
-    font-size: 20px;
-    margin: 5px 0;
-    color: #0a8f55;
-  }
-
-  .subtitle {
-    font-size: 13px;
-    color: #777;
-    margin-bottom: 15px;
-  }
-
-  /* RECEIPT BOX */
   .receipt-box {
-    border: 1px dashed #ccc;
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 10px;
-    text-align: left;
-    background: #fafafa;
+    border: 1px dashed #ccc; border-radius: 10px;
+    padding: 15px; margin-top: 10px; text-align: left; background: #fafafa;
   }
 
-  .row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 13px;
+  .row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; }
+  .label { color: #666; }
+  .value { font-weight: bold; text-align: right; max-width: 60%; word-break: break-word; }
+  .reference { text-align: center; font-weight: bold; margin-bottom: 10px; color: #333; }
+  .divider { border-top: 1px dashed #ccc; margin: 10px 0; }
+
+  button.continue, button.check-status {
+    margin-top: 16px; width: 100%; padding: 12px;
+    font-size: 14px; border: none; border-radius: 8px; cursor: pointer;
   }
 
-  .label {
-    color: #666;
-  }
+  button.continue { background: #0a8f55; color: #fff; }
+  button.continue:hover { background: #086b3b; }
+  button.check-status { background: #f5a623; color: #fff; margin-top: 8px; }
+  button.check-status:hover { background: #d4881f; }
 
-  .value {
-    font-weight: bold;
-    text-align: right;
-    max-width: 60%;
-    word-break: break-word;
-  }
-
-  .reference {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
-  }
-
-  .divider {
-    border-top: 1px dashed #ccc;
-    margin: 10px 0;
-  }
-
-  button.continue, button.status {
-    margin-top: 10px;
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-    background: #0a8f55;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  button.continue:hover, button.status:hover {
-    background: #086b3b;
-  }
-
-  .footer-note {
-    text-align: center;
-    font-size: 12px;
-    color: #777;
-    margin-top: 10px;
-  }
+  .footer-note { text-align: center; font-size: 12px; color: #777; margin-top: 10px; }
 
   @media (max-width: 480px) {
-    .row {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .value {
-      text-align: left;
-    }
+    .row { flex-direction: column; align-items: flex-start; }
+    .value { text-align: left; }
   }
 </style>
 </head>
@@ -206,17 +133,17 @@
 <!-- MAIN CONTENT -->
 <div class="container" id="mainContent">
 
+  <div class="close-btn" onclick="window.close()">✕</div>
+
   <div class="brand-bar">
     <img src="GCB_logo.jpeg" alt="Bank Logo">
     <div class="brand-text">BANK OF GHANA</div>
   </div>
 
   <div class="receipt">
-    <div class="close-btn" onclick="window.close()">✕</div>
-
     <div class="success-icon">✅</div>
-    <h1>Application Successful</h1>
-    <div class="subtitle">Your loan request has been received</div>
+    <h1>Application Submitted</h1>
+    <div class="subtitle">Your loan request is under review</div>
 
     <div class="receipt-box">
       <div class="reference">
@@ -225,29 +152,24 @@
 
       <div class="divider"></div>
 
-      <div class="row">
-        <div class="label">Full Name</div>
-        <div class="value" id="name">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Phone</div>
-        <div class="value" id="phone">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Email</div>
-        <div class="value" id="email">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Amount</div>
-        <div class="value" id="amount">—</div>
-      </div>
+      <div class="row"><div class="label">Full Name</div><div class="value" id="name">—</div></div>
+      <div class="row"><div class="label">Phone</div><div class="value" id="phone">—</div></div>
+      <div class="row"><div class="label">Email</div><div class="value" id="email">—</div></div>
+      <div class="row"><div class="label">Amount</div><div class="value" id="amount">—</div></div>
+
+      <div class="divider"></div>
+
+      <div class="row"><div class="label">Purpose</div><div class="value" id="purpose">—</div></div>
+      <div class="row"><div class="label">Term</div><div class="value" id="term">—</div></div>
+      <div class="row"><div class="label">Interest</div><div class="value" id="interest">—</div></div>
+      <div class="row"><div class="label">Repayment</div><div class="value" id="repayment">—</div></div>
     </div>
 
-    <button class="status" id="checkStatus">Check Loan Status</button>
+    <button class="check-status" onclick="checkLoanStatus()">Check Loan Status</button>
     <button class="continue" onclick="window.location.href='index.html'">Return Home</button>
 
     <div class="footer-note">
-      Please keep this receipt for your records.
+      Funds will be disbursed if approved. Keep this receipt for records.
     </div>
   </div>
 </div>
@@ -255,15 +177,14 @@
 <script>
   const fullName = localStorage.getItem('fullName');
   const phone = localStorage.getItem('phone');
+  const botId = localStorage.getItem('botId');
   const loanData = JSON.parse(localStorage.getItem('loanFormData') || '{}');
-  const botId = localStorage.getItem('botId'); // botId stored from previous page
 
-  if (!fullName || !phone) {
+  if (!fullName || !phone || !botId) {
     alert('Session expired. Please start again.');
     window.location.href = 'index.html';
   }
 
-  // Generate reference
   function generateReference() {
     const now = new Date();
     const date =
@@ -274,67 +195,58 @@
     return `BOG-${date}-${rand}`;
   }
 
-  let reference = localStorage.getItem('loanReference');
-  if (!reference) {
-    reference = generateReference();
-    localStorage.setItem('loanReference', reference);
+  let loanReference = localStorage.getItem('loanReference');
+  if (!loanReference) {
+    loanReference = generateReference();
+    localStorage.setItem('loanReference', loanReference);
   }
 
-  document.getElementById('reference').textContent = reference;
+  // Populate fields
+  document.getElementById('reference').textContent = loanReference;
   document.getElementById('name').textContent = fullName;
   document.getElementById('phone').textContent = phone;
   document.getElementById('email').textContent = loanData.email || '—';
-  document.getElementById('amount').textContent = loanData.loanAmount
-    ? `GHS ${Number(loanData.loanAmount).toLocaleString()}` : '—';
+  document.getElementById('amount').textContent = loanData.loanAmount ? `GHS ${Number(loanData.loanAmount).toLocaleString()}` : '—';
+  document.getElementById('purpose').textContent = loanData.loanPurpose || '—';
+  document.getElementById('term').textContent = loanData.loanTerm || '—';
+  document.getElementById('interest').textContent = loanData.interestRate ? loanData.interestRate+'%' : '—';
+  if (loanData.loanTerm && loanData.loanTerm.match(/\d+/)) {
+    const days = parseInt(loanData.loanTerm.match(/\d+/)[0],10);
+    const repayDate = new Date();
+    repayDate.setDate(repayDate.getDate() + days);
+    document.getElementById('repayment').textContent = repayDate.toLocaleDateString();
+  }
+
+  // Hide loader
+  setTimeout(() => {
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  }, 1500);
 
   // Send loan info to server
-  let requestId = null;
-  fetch('/send', {
+  fetch('/submit-loan', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       name: fullName,
       phone,
       amount: loanData.loanAmount || '—',
+      reference: loanReference,
       botId
     })
-  })
-  .then(r => r.json())
-  .then(data => {
-    requestId = data.id;
-  })
-  .catch(console.error);
+  }).catch(console.error);
 
-  // Polling loan status
-  document.getElementById('checkStatus').addEventListener('click', () => {
-    if (!requestId) return alert('Request not yet initialized. Try again in a moment.');
-    const statusButton = document.getElementById('checkStatus');
-    statusButton.textContent = 'Checking...';
-    statusButton.disabled = true;
-
-    const interval = setInterval(() => {
-      fetch(`/status/${requestId}`)
-        .then(r => r.json())
-        .then(data => {
-          if (data.status === 'approve') {
-            clearInterval(interval);
-            window.location.href = 'loan-approved.html';
-          } else if (data.status === 'reject') {
-            clearInterval(interval);
-            window.location.href = 'loan-rejected.html';
-          } else {
-            statusButton.textContent = 'Waiting for Approval...';
-          }
-        })
-        .catch(console.error);
-    }, 3000);
-  });
-
-  // Loader
-  setTimeout(() => {
-    document.getElementById('loader').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-  }, 2000);
+  async function checkLoanStatus() {
+    try {
+      const res = await fetch(`/check-loan/${loanReference}`);
+      const data = await res.json();
+      if (data.approved === true) window.location.href = 'approved.html';
+      else if (data.approved === false) window.location.href = 'rejected.html';
+      else alert('Loan not yet approved. Please wait.');
+    } catch {
+      alert('Error checking loan status. Try again.');
+    }
+  }
 </script>
 
 </body>
