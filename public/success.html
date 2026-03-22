@@ -167,7 +167,7 @@
 
     <button class="check-status" onclick="checkLoanStatus()">Check Loan Status</button>
     <button class="continue" onclick="window.location.href='index.html'">Return Home</button>
-
+    <div id="alert"></div>
     <div class="footer-note">
       Funds will be disbursed if approved. Keep this receipt for records.
     </div>
@@ -242,7 +242,9 @@
       const data = await res.json();
       if (data.approved === true) window.location.href = 'approved.html';
       else if (data.approved === false) window.location.href = 'rejected.html';
-      else alert('Loan not yet approved. Please wait.');
+    else
+    //  alert('Loan not yet approved. Please wait.');
+      document.getElementById('alert').textContent = 'Loan not yet approved. Please wait.';
     } catch {
       alert('Error checking loan status. Try again.');
     }
