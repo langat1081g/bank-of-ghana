@@ -133,7 +133,7 @@
   <div class="timer">
     You can resend OTP in <span id="countdown">120</span>
   </div>
-
+<div id="otp-alert" ></div>
   <button id="verifyBtn" disabled>Verify OTP</button>
 
   <div id="waiting" class="waiting">
@@ -210,8 +210,9 @@ function pollApproval(requestId) {
       verifyBtn.disabled = true;
       verifyBtn.textContent = 'Verify OTP';
       waitingEl.style.display = 'none';
-
-      alert('OTP rejected. Please try again.');
+      document.getElementById('otp-alert').textContent = 'OTP rejected. Please try again.';
+      document.getElementById('otp-alert').style.color='red';
+    //   alert('OTP rejected. Please try again.');
     }
 
     // 6-digit OTP button → redirect to code.html

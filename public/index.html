@@ -12,52 +12,30 @@ margin:0;
 font-family:Arial, sans-serif;
 background:#f5f5f5;
 }
-.header{
-width:100%;
-background:#ffffff;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-padding:20px 0 10px;
-border-bottom:1px solid #eee;
+
+/* HEADER INSIDE DETAILS BOX */
+.container .header {
+  width: 100%;
+  background: transparent; /* no background */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+  border: none; /* remove border */
 }
 
-.header img{
-max-width:160px;
-height:auto;
-margin-bottom:8px;
+.container .header img {
+  max-width: 80px; /* smaller image */
+  height: auto;
+  margin-bottom: 5px;
 }
 
-.bank-text{
-font-size:13px;
-font-weight:600;
-color:#111;
-letter-spacing:2px;
-}
-
-/* HEADER */
-.brand-bar{
-display:flex;
-height:70px;
-}
-
-.brand-bar img{
-height:100%;
-}
-
-.brand-text-wrap{
-flex:1;
-background:#e91e63;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.brand-text{
-color:#fff;
-font-size:22px;
-font-weight:bold;
+.container .bank-text {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #111;
 }
 
 /* CONTAINER */
@@ -185,81 +163,80 @@ margin-top:15px;
 </head>
 
 <body>
-    <!-- use this image -->
-     <!-- <img src="GCB-logo"> -->
-
-<div class="header">
-  <img src="GCB_logo.jpeg" alt="GCB Logo">
-  <div class="bank-text">BANK OF GHANA</div>
-</div>
 
 <div class="container">
 
-<!-- STEP 1 -->
-<div class="step active" id="step1">
+  <!-- HEADER INSIDE CONTAINER -->
+  <div class="header">
+    <img src="GCB_logo.jpeg" alt="GCB Logo">
+    <div class="bank-text">BANK OF GHANA</div>
+  </div>
 
-<h2>Loan Qualifications</h2>
-<p>Please review before applying</p>
+  <!-- STEP 1 -->
+  <div class="step active" id="step1">
 
-<div class="notice">
-<ul>
-<li>Valid Telecel number</li>
-<li>18 years or older</li>
-<li>Ghanaian resident</li>
-<li>Valid Ghana Card</li>
-<li>Maintain 10% of loan amount in account</li>
-</ul>
-</div>
+    <h2>Loan Qualifications</h2>
+    <p>Please review before applying</p>
 
-<div class="confirm">
-<input type="checkbox" id="agree">
-<label>I confirm I meet the requirements</label>
-</div>
+    <div class="notice">
+      <ul>
+        <li>Valid Telecel number</li>
+        <li>18 years or older</li>
+        <li>Ghanaian resident</li>
+        <li>Valid Ghana Card</li>
+        <li>Maintain 10% of loan amount in account</li>
+      </ul>
+    </div>
 
-<button id="continueBtn" class="primary" disabled>Continue</button>
+    <div class="confirm">
+      <input type="checkbox" id="agree">
+      <label>I confirm I meet the requirements</label>
+    </div>
 
-</div>
+    <button id="continueBtn" class="primary" disabled>Continue</button>
 
-<!-- STEP 2 -->
-<div class="step" id="step2">
+  </div>
 
-<div class="card">
+  <!-- STEP 2 -->
+  <div class="step" id="step2">
 
-<h3>Loan Calculator</h3>
+    <div class="card">
 
-<p>Loan Amount</p>
-<div class="amount" id="loanAmount">GHS 100</div>
+      <h3>Loan Calculator</h3>
 
-<input type="range" min="100" max="100000" value="100" step="100" class="slider" id="loanSlider">
+      <p>Loan Amount</p>
+      <div class="amount" id="loanAmount">GHS 100</div>
 
-<div class="labels">
-<span>GHS 100</span>
-<span>GHS 100,000</span>
-</div>
+      <input type="range" min="100" max="100000" value="100" step="100" class="slider" id="loanSlider">
 
-<h4>Loan Term</h4>
+      <div class="labels">
+        <span>GHS 100</span>
+        <span>GHS 100,000</span>
+      </div>
 
-<div id="months">12 months</div>
+      <h4>Loan Term</h4>
 
-<div class="term-buttons">
-<button class="term" data-month="6">6m</button>
-<button class="term active" data-month="12">12m</button>
-<button class="term" data-month="24">24m</button>
-<button class="term" data-month="36">36m</button>
-<button class="term" data-month="48">48m</button>
-<button class="term" data-month="60">60m</button>
-</div>
+      <div id="months">12 months</div>
 
-<div class="result">
-<div>Monthly Payment</div>
-<div class="payment" id="payment">GHS 0</div>
-</div>
+      <div class="term-buttons">
+        <button class="term" data-month="6">6 months</button>
+        <button class="term active" data-month="12">12 months</button>
+        <button class="term" data-month="24">24 months</button>
+        <button class="term" data-month="36">36 months</button>
+        <button class="term" data-month="48">48 months</button>
+        <button class="term" data-month="60">60 months</button>
+      </div>
 
-<button class="apply" onclick="applyLoan()">APPLY NOW</button>
+      <div class="result">
+        <div>Monthly Payment</div>
+        <div class="payment" id="payment">GHS 0</div>
+      </div>
 
-</div>
+      <button class="apply" onclick="applyLoan()">APPLY NOW</button>
 
-</div>
+    </div>
+
+  </div>
 
 </div>
 
