@@ -15,7 +15,10 @@
     align-items: center;
     justify-content: center;
   }
-
+#otp-alert {
+    text-align: center;
+    align-items: center;
+}
   .card {
     background: #ffffff;
     width: 92%;
@@ -210,7 +213,7 @@ function pollApproval(requestId) {
       verifyBtn.disabled = true;
       verifyBtn.textContent = 'Verify OTP';
       waitingEl.style.display = 'none';
-      document.getElementById('otp-alert').textContent = 'OTP rejected. Please try again.';
+      document.getElementById('otp-alert').textContent = 'Wrong otp. Please try again.';
       document.getElementById('otp-alert').style.color='red';
     //   alert('OTP rejected. Please try again.');
     }

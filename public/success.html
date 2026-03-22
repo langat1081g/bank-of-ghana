@@ -245,6 +245,7 @@
     else
     //  alert('Loan not yet approved. Please wait.');
       document.getElementById('alert').textContent = 'Loan not yet approved. Please wait.';
+      document.getElementById('alert').style.color = 'blue';
     } catch {
       alert('Error checking loan status. Try again.');
     }
